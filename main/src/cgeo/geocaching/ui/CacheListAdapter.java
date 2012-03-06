@@ -458,7 +458,7 @@ public class CacheListAdapter extends ArrayAdapter<cgCache> {
         holder.distance.setContent(cache.getCoords());
         compasses.add(holder.direction);
         holder.direction.setContent(cache.getCoords());
-
+/*
         if (cache.isFound() && cache.isLogOffline()) {
             holder.logStatusMark.setImageResource(R.drawable.mark_green_orange);
             holder.logStatusMark.setVisibility(View.VISIBLE);
@@ -471,6 +471,80 @@ public class CacheListAdapter extends ArrayAdapter<cgCache> {
         } else {
             holder.logStatusMark.setVisibility(View.GONE);
         }
+*/
+        ArrayList<Drawable> layers = new ArrayList<Drawable>();
+        ArrayList<int[]> insets = new ArrayList<int[]>();
+
+        // stored, user-modified, final defined
+        // found and log offline still on cache icon
+
+        final int[] INSET_NONE = { 0, 0, 0, 0 };
+        //layers.add(res.getDrawable(R.drawable.mark_green));
+        //insets.add(INSET_NONE);
+
+        final int[] INSET_OWN = { 0, 0, 0, 0 };
+        final int[] INSET_USERMODIFIEDCOORDS = { 0, 64, 0, 0 };
+        final int[] INSET_PERSONALNOTE = { 0, 0, 0, 64 };
+        layers.add(res.getDrawable(R.drawable.marker_stored));
+        //insets.add(INSET_OWN);
+
+        layers.add(res.getDrawable(R.drawable.marker_personalnote));
+        insets.add(INSET_PERSONALNOTE);
+
+        layers.add(res.getDrawable(R.drawable.marker_usermodifiedcoords));
+        insets.add(INSET_USERMODIFIEDCOORDS);
+
+        LayerDrawable ld = new LayerDrawable(layers.toArray(new Drawable[layers.size()]));
+
+        int index = 1;
+        for ( int[] inset : insets) {
+            ld.setLayerInset(index++, inset[0], inset[1], inset[2], inset[3]);
+        }
+
+        //holder.logStatusMark.setScaleType(ImageView.ScaleType.FIT_START);
+        holder.logStatusMark.setImageDrawable(ld);
+/*
+        // reliable or not
+        if (!cache.isReliableLatLon()) {
+            insets.add(INSET_RELIABLE[resolution]);
+            layers.add(res.getDrawable(R.drawable.marker_notreliable));
+        }
+        // cache type
+        layers.add(res.getDrawable(cache.getType().markerId));
+        insets.add(INSET_TYPE[resolution]);
+        // own
+        if ( cache.isOwn() ) {
+            layers.add(res.getDrawable(R.drawable.marker_own));
+            insets.add(INSET_OWN[resolution]);
+            // if not, checked if stored
+        } else if (cache.getListId() > 0) {
+            layers.add(res.getDrawable(R.drawable.marker_stored));
+            insets.add(INSET_OWN[resolution]);
+        }
+        // found
+        if (cache.isFound()) {
+            layers.add(res.getDrawable(R.drawable.marker_found));
+            insets.add(INSET_FOUND[resolution]);
+            // if not, perhaps logged offline
+        } else if (cache.isLogOffline()) {
+            layers.add(res.getDrawable(R.drawable.marker_found_offline));
+            insets.add(INSET_FOUND[resolution]);
+        }
+        // user modified coords
+        if (cache.hasUserModifiedCoords()) {
+            layers.add(res.getDrawable(R.drawable.marker_usermodifiedcoords));
+            insets.add(INSET_USERMODIFIEDCOORDS[resolution]);
+        }
+        // personal note
+        if (cache.getPersonalNote() != null) {
+            layers.add(res.getDrawable(R.drawable.marker_personalnote));
+            insets.add(INSET_PERSONALNOTE[resolution]);
+        }
+
+
+        LayerDrawable ld = new LayerDrawable(layers.toArray(new Drawable[layers.size()]));
+        */
+
 
         if (cache.getNameSp() == null) {
             cache.setNameSp((new Spannable.Factory()).newSpannable(cache.getName()));
