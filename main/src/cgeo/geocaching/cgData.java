@@ -2905,7 +2905,9 @@ public class cgData {
 
     /**
      * Remove caches with listId = 0
-     *
+     * Only removes caches with visiteddate = 0 as all others have a visited date set, which means they should
+     * be kept for History list
+     * 
      * @param more
      *            true = all caches false = caches stored 3 days or more before
      */
@@ -2934,8 +2936,8 @@ public class cgData {
                 cursor = databaseRO.query(
                         dbTableCaches,
                         new String[] { "geocode" },
-                        "reason = 0 and detailed < ? and detailedupdate < ? and visiteddate < ?",
-                        new String[] { timestampString, timestampString, timestampString },
+                        "reason = 0 and detailed < ? and detailedupdate < ? and visiteddate = 0",
+                        new String[] { timestampString, timestampString },
                         null,
                         null,
                         null,
