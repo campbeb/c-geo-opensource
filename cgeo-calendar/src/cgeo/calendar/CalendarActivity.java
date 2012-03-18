@@ -52,8 +52,7 @@ public final class CalendarActivity extends Activity {
             coords = getParameter(ICalendar.PARAM_COORDS);
 
             if (name.length() > 0 && hiddenDate.length() > 0) {
-                if (Compatibility.isLevel14()) {
-                    addToCalendarLevel14();
+                if (Compatibility.isLevel14() && addToCalendarLevel14()) {
                     finish();
                 } else {
                     selectCalendarForAdding();
@@ -247,7 +246,7 @@ public final class CalendarActivity extends Activity {
      * calendar permissions.
      * TODO Does this work with apps other than default calendar app?
      */
-    private void addToCalendarLevel14() {
+    private boolean addToCalendarLevel14() {
         try {
             final Date eventDate = parseDate();
             final String description = parseDescription();
@@ -269,10 +268,10 @@ public final class CalendarActivity extends Activity {
                     .putExtra("eventLocation", location);
             startActivity(intent);
         } catch (Exception e) {
-            showToast(getResources().getString(R.string.event_fail));
-
             Log.e(LOG_TAG, "CalendarActivity.addToCalendarLevel14: " + e.toString());
+            return false;
         }
+        return true;
     }
 
     public final void showToast(final String text) {
