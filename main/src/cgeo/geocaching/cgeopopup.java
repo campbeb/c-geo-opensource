@@ -526,6 +526,8 @@ public class cgeopopup extends AbstractActivity {
             return;
         }
 
+        verifyCoordinatesReliable();
+
         NavigationAppFactory.startDefaultNavigationApplication(geo, this, cache, null, null);
     }
 
@@ -636,6 +638,7 @@ public class cgeopopup extends AbstractActivity {
             showToast(res.getString(R.string.cache_coordinates_no));
             return;
         }
+        verifyCoordinatesReliable();
         NavigationAppFactory.startDefaultNavigationApplication(geo, this, cache, null, null);
         finish();
     }
@@ -648,8 +651,16 @@ public class cgeopopup extends AbstractActivity {
             showToast(res.getString(R.string.cache_coordinates_no));
             return;
         }
+        verifyCoordinatesReliable();
         NavigationAppFactory.startDefaultNavigationApplication2(geo, this, cache, null, null);
         finish();
+    }
+
+    private void verifyCoordinatesReliable() {
+        if (!cache.isReliableLatLon()) {
+            final SearchResult search = ConnectorFactory.getConnector(cache.getGeocode()).searchByGeocode(cache.getGeocode(), cache.getGuid(), app, null);
+            cache = search.getFirstCacheFromResult(LoadFlags.LOAD_CACHE_ONLY);
+        }
     }
 
     @Override
