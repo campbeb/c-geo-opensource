@@ -62,7 +62,7 @@ public abstract class AbstractConnector implements IConnector {
     }
 
     @Override
-    public Geopoint searchByGeocodeForLatLon(final String geocode, final cgeoapplication app, final CancellableHandler handler) {
+    public Geopoint searchByGeocodeForLatLon(final String guid, final cgeoapplication app, final CancellableHandler handler) {
         return null;
     }
 

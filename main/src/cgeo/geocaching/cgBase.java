@@ -62,6 +62,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class cgBase {
 
@@ -413,11 +414,25 @@ public class cgBase {
             return null;
         }
 
-        // latitude and longitude. Can only be retrieved if user is logged in
-        final String latlon = new String(BaseUtils.getMatch(page, GCConstants.PATTERN_LATLON, true, ""));
-        if (StringUtils.isNotEmpty(latlon)) {
+        final Pattern PATTERN_GPSEXPORT_DELORME_LAT = Pattern.compile("pt.latitude = (.*?);");
+        final Pattern PATTERN_GPSEXPORT_DELORME_LON = Pattern.compile("pt.longitude = (.*?);");
+
+        // GPS export seems to default to DeLorme format, so try it first
+        String lat = new String(BaseUtils.getMatch(page, PATTERN_GPSEXPORT_DELORME_LAT, true, ""));
+        String lon = new String(BaseUtils.getMatch(page, PATTERN_GPSEXPORT_DELORME_LON, true, ""));
+
+        if (StringUtils.isEmpty(lat) && StringUtils.isEmpty(lon)) {
+            final Pattern PATTERN_GPSEXPORT_ALLOTHER_LAT = Pattern.compile("<bounds minlat=\"(.*?)\" minlon");
+            final Pattern PATTERN_GPSEXPORT_ALLOTHER_LON = Pattern.compile("\" minlon=\"(.*?)\" maxlat");
+
+            // try format for Magellan, Garmin, and Falk
+            lat = new String(BaseUtils.getMatch(page, PATTERN_GPSEXPORT_ALLOTHER_LAT, true, ""));
+            lon = new String(BaseUtils.getMatch(page, PATTERN_GPSEXPORT_ALLOTHER_LON, true, ""));
+        }
+
+        if (StringUtils.isNotEmpty(lat) && StringUtils.isNotEmpty(lon)) {
             try {
-                return new Geopoint(latlon);
+                return new Geopoint(lat, lon);
             } catch (Geopoint.GeopointException e) {
                 Log.w(Settings.tag, "cgBase.parseCacheForLatLon: Failed to parse cache coordinates: " + e.toString());
             }

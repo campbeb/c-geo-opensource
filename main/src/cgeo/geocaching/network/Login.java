@@ -218,6 +218,13 @@ public abstract class Login {
             return true;
         }
 
+        // waypoint license agreement -> means not logged in
+        setActualLoginStatus(!page.contains("Waypoint License Agreement"));
+        if (isActualLoginStatus()) {
+            // no user information is available on this page
+            return true;
+        }
+
         // res is null during the unit tests
         if (cgBase.res != null) {
             setActualStatus(cgBase.res.getString(R.string.init_login_popup_failed));

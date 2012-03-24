@@ -659,7 +659,7 @@ public class cgeopopup extends AbstractActivity {
 
     private void verifyCoordinatesReliable() {
         if (!cache.isReliableLatLon()) {
-            final Geopoint coords = ConnectorFactory.getConnector(cache.getGeocode()).searchByGeocodeForLatLon(cache.getGeocode(), app, null);
+            final Geopoint coords = ConnectorFactory.getConnector(cache.getGeocode()).searchByGeocodeForLatLon(cache.getGuid(), app, null);
             if (coords != null) {
                 cache.setCoords(coords);
                 cache.setReliableLatLon(true);

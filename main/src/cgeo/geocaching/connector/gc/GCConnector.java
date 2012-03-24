@@ -140,19 +140,19 @@ public class GCConnector extends AbstractConnector {
     }
 
     @Override
-    public Geopoint searchByGeocodeForLatLon(final String geocode, final cgeoapplication app, final CancellableHandler handler) {
+    public Geopoint searchByGeocodeForLatLon(final String guid, final cgeoapplication app, final CancellableHandler handler) {
         if (app == null) {
             Log.e(Settings.tag, "GCConnector.searchByGeocodeForLatLon: No application found");
             return null;
         }
-        if (StringUtils.isBlank(geocode)) {
-            Log.e(Settings.tag, "GCConnector.searchByGeocodeForLatLon: No geocode found");
+        if (StringUtils.isBlank(guid)) {
+            Log.e(Settings.tag, "GCConnector.searchByGeocodeForLatLon: No guid found");
             return null;
         }
 
-        final Parameters params = new Parameters("wp", geocode);
+        final Parameters params = new Parameters("guid", guid);
 
-        final String page = Network.requestLogged("http://www.geocaching.com/seek/cache_details.aspx", params, false, false, false);
+        final String page = Network.requestLogged("http://www.geocaching.com/seek/sendtogps.aspx", params, false, false, false);
 
         if (StringUtils.isEmpty(page)) {
             Log.e(Settings.tag, "GCConnector.searchByGeocodeForLatLon: No data from server");

@@ -91,7 +91,7 @@ public interface IConnector {
      * @param handler
      * @return <code>Gepoint</code> of the coordinates
      */
-    public Geopoint searchByGeocodeForLatLon(final String geocode, final cgeoapplication app, final CancellableHandler handler);
+    public Geopoint searchByGeocodeForLatLon(final String guid, final cgeoapplication app, final CancellableHandler handler);
 
     /**
      * search caches by coordinate. must be implemented if {@link supportsCachesAround} returns <code>true</true>
