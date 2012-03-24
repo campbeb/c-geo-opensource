@@ -9,6 +9,7 @@ import cgeo.geocaching.enumerations.LoadFlags;
 import cgeo.geocaching.enumerations.LogType;
 import cgeo.geocaching.gcvote.GCVote;
 import cgeo.geocaching.gcvote.GCVoteRating;
+import cgeo.geocaching.geopoint.Geopoint;
 import cgeo.geocaching.geopoint.HumanDistance;
 import cgeo.geocaching.utils.CancellableHandler;
 
@@ -658,8 +659,11 @@ public class cgeopopup extends AbstractActivity {
 
     private void verifyCoordinatesReliable() {
         if (!cache.isReliableLatLon()) {
-            final SearchResult search = ConnectorFactory.getConnector(cache.getGeocode()).searchByGeocode(cache.getGeocode(), cache.getGuid(), app, null);
-            cache = search.getFirstCacheFromResult(LoadFlags.LOAD_CACHE_ONLY);
+            final Geopoint coords = ConnectorFactory.getConnector(cache.getGeocode()).searchByGeocodeForLatLon(cache.getGeocode(), app, null);
+            if (coords != null) {
+                cache.setCoords(coords);
+                cache.setReliableLatLon(true);
+            }
         }
     }
 

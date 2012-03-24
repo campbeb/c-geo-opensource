@@ -61,6 +61,11 @@ public abstract class AbstractConnector implements IConnector {
         return null;
     }
 
+    @Override
+    public Geopoint searchByGeocodeForLatLon(final String geocode, final cgeoapplication app, final CancellableHandler handler) {
+        return null;
+    }
+
     public SearchResult searchByViewport(Viewport viewport, String tokens[]) {
         return null;
     }

@@ -8,6 +8,7 @@ import cgeo.geocaching.cgCache;
 import cgeo.geocaching.cgeoapplication;
 import cgeo.geocaching.connector.AbstractConnector;
 import cgeo.geocaching.enumerations.StatusCode;
+import cgeo.geocaching.geopoint.Geopoint;
 import cgeo.geocaching.geopoint.Viewport;
 import cgeo.geocaching.network.Network;
 import cgeo.geocaching.network.Parameters;
@@ -136,6 +137,35 @@ public class GCConnector extends AbstractConnector {
         final SearchResult search = searchResult.filterSearchResults(false, false, Settings.getCacheType());
 
         return search;
+    }
+
+    @Override
+    public Geopoint searchByGeocodeForLatLon(final String geocode, final cgeoapplication app, final CancellableHandler handler) {
+        if (app == null) {
+            Log.e(Settings.tag, "GCConnector.searchByGeocodeForLatLon: No application found");
+            return null;
+        }
+        if (StringUtils.isBlank(geocode)) {
+            Log.e(Settings.tag, "GCConnector.searchByGeocodeForLatLon: No geocode found");
+            return null;
+        }
+
+        final Parameters params = new Parameters("wp", geocode);
+
+        final String page = Network.requestLogged("http://www.geocaching.com/seek/cache_details.aspx", params, false, false, false);
+
+        if (StringUtils.isEmpty(page)) {
+            Log.e(Settings.tag, "GCConnector.searchByGeocodeForLatLon: No data from server");
+            return null;
+        }
+
+        final Geopoint geopoint = cgBase.parseCacheForLatLon(page, handler);
+
+        if (geopoint == null) {
+            Log.e(Settings.tag, "GCConnector.searchByGeocodeForLatLon: No coordinates parsed");
+        }
+
+        return geopoint;
     }
 
     @Override

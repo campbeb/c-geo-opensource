@@ -390,6 +390,41 @@ public class cgBase {
         return searchResult;
     }
 
+    public static Geopoint parseCacheForLatLon(final String page, final CancellableHandler handler) {
+        if (StringUtils.isBlank(page)) {
+            Log.e(Settings.tag, "cgBase.parseCacheForLatLon: No page given");
+            return null;
+        }
+        if (page.contains("Cache is Unpublished") || page.contains("you cannot view this cache listing until it has been published")) {
+            Log.i(Settings.tag, "cgBase.parseCacheForLatLon: Cache is unpublished");
+            return null;
+        }
+        if (page.contains("Sorry, the owner of this listing has made it viewable to Premium Members only.")) {
+            Log.i(Settings.tag, "cgBase.parseCacheForLatLon: Cache is for premium members only");
+            return null;
+        }
+        if (page.contains("has chosen to make this cache listing visible to Premium Members only.")) {
+            Log.i(Settings.tag, "cgBase.parseCacheForLatLon: Cache is for premium members only");
+            return null;
+        }
+        final String cacheName = Html.fromHtml(BaseUtils.getMatch(page, GCConstants.PATTERN_NAME, true, "")).toString();
+        if ("An Error Has Occurred".equalsIgnoreCase(cacheName)) {
+            Log.i(Settings.tag, "cgBase.parseCacheForLatLon: Unknown error occurred");
+            return null;
+        }
+
+        // latitude and longitude. Can only be retrieved if user is logged in
+        final String latlon = new String(BaseUtils.getMatch(page, GCConstants.PATTERN_LATLON, true, ""));
+        if (StringUtils.isNotEmpty(latlon)) {
+            try {
+                return new Geopoint(latlon);
+            } catch (Geopoint.GeopointException e) {
+                Log.w(Settings.tag, "cgBase.parseCacheForLatLon: Failed to parse cache coordinates: " + e.toString());
+            }
+        }
+        return null;
+    }
+
     static SearchResult parseCacheFromText(final String page, final CancellableHandler handler) {
         sendLoadProgressDetail(handler, R.string.cache_dialog_loading_details_status_details);
 

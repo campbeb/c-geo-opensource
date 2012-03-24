@@ -83,6 +83,17 @@ public interface IConnector {
     public SearchResult searchByGeocodes(final Set<String> geocodes);
 
     /**
+     * Search for a geocode in order to get its latitude and longitude
+     *
+     * @param geocode
+     *            of the cache to search
+     * @param app
+     * @param handler
+     * @return <code>Gepoint</code> of the coordinates
+     */
+    public Geopoint searchByGeocodeForLatLon(final String geocode, final cgeoapplication app, final CancellableHandler handler);
+
+    /**
      * search caches by coordinate. must be implemented if {@link supportsCachesAround} returns <code>true</true>
      *
      * @param center
