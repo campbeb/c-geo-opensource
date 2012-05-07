@@ -271,7 +271,7 @@ public final class CalendarActivity extends Activity {
         } catch (Exception e) {
             showToast(getResources().getString(R.string.event_fail));
 
-            Log.e(LOG_TAG, "CalendarActivity.addToCalendarLevel14: " + e.toString());
+            Log.e(LOG_TAG, "CalendarActivity.addToCalendarLevel14: with Edit Intent " + e.toString());
         }
     }
 
