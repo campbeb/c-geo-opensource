@@ -175,7 +175,7 @@
         <item name="android:textSize">11dip</item>
         <item name="android:textColor">@color/just_white</item>
         <item name="android:background">@drawable/count_bcg</item>
-        <item name="android:text"></item>
+        <item name="android:text" />
     </style>
 
     <!-- current location -->
