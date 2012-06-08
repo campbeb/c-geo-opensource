@@ -637,7 +637,7 @@ public class cgeocaches extends AbstractListActivity {
         if (coordsNow != null) {
             adapter.setActualCoordinates(coordsNow);
             if (forceSort) {
-                adapter.forceSort();
+                adapter.forceSort(false);
             }
         }
     }
@@ -1091,7 +1091,7 @@ public class cgeocaches extends AbstractListActivity {
         } else {
             adapter.notifyDataSetChanged();
         }
-        adapter.forceSort();
+        adapter.forceSort(false);
         adapter.reFilter();
     }
 

@@ -150,8 +150,12 @@ public class CacheListAdapter extends ArrayAdapter<cgCache> {
      * @param comparator
      */
     public void setComparator(final CacheComparator comparator) {
+        boolean reverseSort = false;
+        if (cacheComparator != null && comparator != null && cacheComparator.getClass() == comparator.getClass()) {
+            reverseSort = true;
+        }
         cacheComparator = comparator;
-        forceSort();
+        forceSort(reverseSort);
     }
 
     public CacheComparator getCacheComparator() {
@@ -248,7 +252,7 @@ public class CacheListAdapter extends ArrayAdapter<cgCache> {
         notifyDataSetChanged();
     }
 
-    public void forceSort() {
+    public void forceSort(final boolean reverseSort) {
         if (CollectionUtils.isEmpty(list) || selectMode) {
             return;
         }
@@ -259,6 +263,10 @@ public class CacheListAdapter extends ArrayAdapter<cgCache> {
         }
         else {
             Collections.sort(list, cacheComparator);
+        }
+
+        if (reverseSort) {
+            Collections.reverse(list);
         }
 
         notifyDataSetChanged();
