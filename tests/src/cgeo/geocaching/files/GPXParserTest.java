@@ -13,6 +13,8 @@ import cgeo.geocaching.geopoint.Geopoint;
 import cgeo.geocaching.test.AbstractResourceInstrumentationTestCase;
 import cgeo.geocaching.test.R;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
@@ -279,6 +281,37 @@ public class GPXParserTest extends AbstractResourceInstrumentationTestCase {
         assertEquals(6, caches.get(0).getLogs().size());
 
         removeCacheCompletely(geocode);
+    }
+
+    public void testWaymarking() throws Exception {
+        final List<Geocache> caches = readGPX10(R.raw.waymarking_gpx);
+        assertEquals(1, caches.size());
+        final Geocache waymark = caches.get(0);
+        assertNotNull(waymark);
+        assertEquals("WM7BM7", waymark.getGeocode());
+        assertEquals("Roman water pipe Kornwestheim", waymark.getName());
+        assertTrue(StringUtils.isNotBlank(waymark.getUrl())); // connector must be able to create it
+        assertEquals(CacheType.UNKNOWN, waymark.getType());
+        assertEquals(CacheSize.UNKNOWN, waymark.getSize());
+    }
+
+    public void testOX() throws IOException, ParserException {
+        final List<Geocache> caches = readGPX10(R.raw.ox1ry0y_gpx);
+        assertEquals(1, caches.size());
+        final Geocache cache = caches.get(0);
+        assertEquals("OX1RY0Y", cache.getGeocode());
+        assertEquals(CacheType.TRADITIONAL, cache.getType());
+        assertEquals(false, cache.isArchived());
+        assertEquals(false, cache.isDisabled());
+        assertEquals("Kornwestheim und die Römer", cache.getName());
+        assertEquals("Thomas&Dani", cache.getOwnerDisplayName());
+        assertEquals(CacheSize.SMALL, cache.getSize());
+        assertEquals(1.5f, cache.getDifficulty());
+        assertEquals(1.0f, cache.getTerrain());
+        assertTrue(cache.getDescription().startsWith("Dieses sind die Reste einer in Kornwestheim gefundenen"));
+        assertEquals(new Geopoint(48.8642167, 9.1836), cache.getCoords());
+        assertTrue(cache.isReliableLatLon());
+        assertEquals("Wasserleitung", cache.getHint());
     }
 
 }

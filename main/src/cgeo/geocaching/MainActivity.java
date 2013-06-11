@@ -189,7 +189,7 @@ public class MainActivity extends AbstractActivity {
     public void onCreate(Bundle savedInstanceState) {
         // don't call the super implementation with the layout argument, as that would set the wrong theme
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.main_activity);
         Views.inject(this);
 
         if ((getIntent().getFlags() & Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT) != 0) {
@@ -756,7 +756,7 @@ public class MainActivity extends AbstractActivity {
      *            unused here but needed since this method is referenced from XML layout
      */
     public void showAbout(View view) {
-        startActivity(new Intent(this, AboutActivity.class));
+        AboutActivity_.intent(this).start();
     }
 
     /**

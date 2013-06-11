@@ -4,6 +4,7 @@ import butterknife.InjectView;
 import butterknife.Views;
 
 import cgeo.geocaching.activity.AbstractActivity;
+import cgeo.geocaching.ui.AbstractViewHolder;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,13 +21,13 @@ public class UsefulAppsActivity extends AbstractActivity {
 
     @InjectView(R.id.apps_list) protected ListView list;
 
-    protected static class ViewHolder {
+    protected static class ViewHolder extends AbstractViewHolder {
         @InjectView(R.id.title) protected TextView title;
         @InjectView(R.id.image) protected ImageView image;
         @InjectView(R.id.description) protected TextView description;
 
         public ViewHolder(View rowView) {
-            Views.inject(this, rowView);
+            super(rowView);
         }
     }
 
@@ -66,21 +67,20 @@ public class UsefulAppsActivity extends AbstractActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState, R.layout.useful_apps_activity);
+        super.onCreate(savedInstanceState, R.layout.usefulapps_activity);
 
         Views.inject(this);
 
-        list.setAdapter(new ArrayAdapter<HelperApp>(this, R.layout.useful_apps_item, HELPER_APPS) {
+        list.setAdapter(new ArrayAdapter<HelperApp>(this, R.layout.usefulapps_item, HELPER_APPS) {
             @Override
             public View getView(int position, View convertView, android.view.ViewGroup parent) {
                 View rowView = convertView;
                 if (null == rowView) {
-                    rowView = getLayoutInflater().inflate(R.layout.useful_apps_item, null);
+                    rowView = getLayoutInflater().inflate(R.layout.usefulapps_item, null);
                 }
                 ViewHolder holder = (ViewHolder) rowView.getTag();
                 if (null == holder) {
                     holder = new ViewHolder(rowView);
-                    rowView.setTag(holder);
                 }
 
                 final HelperApp app = getItem(position);

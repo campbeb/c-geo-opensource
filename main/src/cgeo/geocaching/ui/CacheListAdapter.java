@@ -1,7 +1,6 @@
 package cgeo.geocaching.ui;
 
 import butterknife.InjectView;
-import butterknife.Views;
 
 import cgeo.geocaching.CacheDetailActivity;
 import cgeo.geocaching.Geocache;
@@ -94,7 +93,7 @@ public class CacheListAdapter extends ArrayAdapter<Geocache> {
      * view holder for the cache list adapter
      *
      */
-    protected static class ViewHolder {
+    protected static class ViewHolder extends AbstractViewHolder {
         @InjectView(R.id.checkbox) protected CheckBox checkbox;
         @InjectView(R.id.log_status_mark) protected ImageView logStatusMark;
         @InjectView(R.id.text) protected TextView text;
@@ -106,8 +105,7 @@ public class CacheListAdapter extends ArrayAdapter<Geocache> {
         @InjectView(R.id.dirimg) protected ImageView dirImg;
 
         public ViewHolder(View view) {
-            Views.inject(this, view);
-            view.setTag(this);
+            super(view);
         }
     }
 
@@ -356,7 +354,7 @@ public class CacheListAdapter extends ArrayAdapter<Geocache> {
 
         final ViewHolder holder;
         if (v == null) {
-            v = inflater.inflate(R.layout.caches_item, null);
+            v = inflater.inflate(R.layout.cacheslist_item, null);
 
             holder = new ViewHolder(v);
         } else {

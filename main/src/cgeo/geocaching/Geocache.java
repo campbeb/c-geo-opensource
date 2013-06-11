@@ -459,9 +459,9 @@ public class Geocache implements ICache, IWaypoint {
             fromActivity.showToast(((Activity) fromActivity).getResources().getString(R.string.err_cannot_log_visit));
             return;
         }
-        Intent logVisitIntent = new Intent((Activity) fromActivity, VisitCacheActivity.class);
-        logVisitIntent.putExtra(VisitCacheActivity.EXTRAS_ID, cacheId);
-        logVisitIntent.putExtra(VisitCacheActivity.EXTRAS_GEOCODE, geocode);
+        Intent logVisitIntent = new Intent((Activity) fromActivity, LogCacheActivity.class);
+        logVisitIntent.putExtra(LogCacheActivity.EXTRAS_ID, cacheId);
+        logVisitIntent.putExtra(LogCacheActivity.EXTRAS_GEOCODE, geocode);
 
         ((Activity) fromActivity).startActivity(logVisitIntent);
     }
@@ -1561,9 +1561,12 @@ public class Geocache implements ICache, IWaypoint {
             Geocache cache;
             // get cache details, they may not yet be complete
             if (origCache != null) {
+                SearchResult search = null;
                 // only reload the cache if it was already stored or doesn't have full details (by checking the description)
                 if (origCache.isOffline() || StringUtils.isBlank(origCache.getDescription())) {
-                    final SearchResult search = searchByGeocode(origCache.getGeocode(), null, listId, false, handler);
+                    search = searchByGeocode(origCache.getGeocode(), null, listId, false, handler);
+                }
+                if (search != null) {
                     cache = search.getFirstCacheFromResult(LoadFlags.LOAD_CACHE_OR_DB);
                 } else {
                     cache = origCache;

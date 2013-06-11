@@ -47,7 +47,7 @@ public class CoordinatesInputDialog extends Dialog {
     private coordInputFormatEnum currentFormat = null;
 
     public CoordinatesInputDialog(final AbstractActivity context, final Geocache cache, final Geopoint gp, final IGeoData geo) {
-        super(context, ActivityMixin.getTheme());
+        super(context, ActivityMixin.getDialogTheme());
         this.context = context;
         this.geo = geo;
         this.cache = cache;
@@ -72,7 +72,7 @@ public class CoordinatesInputDialog extends Dialog {
             // nothing
         }
 
-        setContentView(R.layout.coords);
+        setContentView(R.layout.coordinatesinput_dialog);
 
         final Spinner spinner = (Spinner) findViewById(R.id.spinnerCoordinateFormats);
         final ArrayAdapter<CharSequence> adapter =

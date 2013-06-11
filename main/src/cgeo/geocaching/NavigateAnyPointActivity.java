@@ -8,6 +8,7 @@ import cgeo.geocaching.apps.cache.navi.NavigationAppFactory;
 import cgeo.geocaching.geopoint.DistanceParser;
 import cgeo.geocaching.geopoint.Geopoint;
 import cgeo.geocaching.geopoint.GeopointFormatter;
+import cgeo.geocaching.ui.AbstractViewHolder;
 import cgeo.geocaching.ui.Formatter;
 import cgeo.geocaching.ui.dialog.CoordinatesInputDialog;
 import cgeo.geocaching.utils.GeoDirHandler;
@@ -62,14 +63,13 @@ public class NavigateAnyPointActivity extends AbstractActivity {
 
     private String distanceUnit = "";
 
-    protected static class ViewHolder {
+    protected static class ViewHolder extends AbstractViewHolder {
         @InjectView(R.id.simple_way_point_longitude) protected TextView longitude;
         @InjectView(R.id.simple_way_point_latitude) protected TextView latitude;
         @InjectView(R.id.date) protected TextView date;
 
         public ViewHolder(View rowView) {
-            Views.inject(this, rowView);
-            rowView.setTag(this);
+            super(rowView);
         }
     }
 
@@ -119,7 +119,7 @@ public class NavigateAnyPointActivity extends AbstractActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState, R.layout.point);
+        super.onCreate(savedInstanceState, R.layout.navigateanypoint_activity);
         Views.inject(this);
 
         createHistoryView();
@@ -127,7 +127,7 @@ public class NavigateAnyPointActivity extends AbstractActivity {
     }
 
     private void createHistoryView() {
-        final View pointControls = getLayoutInflater().inflate(R.layout.point_controls, null);
+        final View pointControls = getLayoutInflater().inflate(R.layout.navigateanypoint_header, null);
         historyListView.addHeaderView(pointControls, null, false);
 
         // inject a second time to also find the dynamically expanded views above
@@ -197,7 +197,7 @@ public class NavigateAnyPointActivity extends AbstractActivity {
 
     private TextView getEmptyHistoryFooter() {
         if (historyFooter == null) {
-            historyFooter = (TextView) getLayoutInflater().inflate(R.layout.caches_footer, null);
+            historyFooter = (TextView) getLayoutInflater().inflate(R.layout.cacheslist_footer, null);
             historyFooter.setText(R.string.search_history_empty);
         }
         return historyFooter;

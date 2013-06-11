@@ -93,7 +93,7 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name=".AboutActivity"
+            android:name=".AboutActivity_"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/about"
             android:windowSoftInputMode="stateHidden" >
@@ -167,11 +167,11 @@
             android:label="@string/map_map" >
         </activity>
         <activity
-            android:name=".StaticMapsActivity"
+            android:name=".StaticMapsActivity_"
             android:label="@string/map_static_title" >
         </activity>
         <activity
-            android:name=".VisitCacheActivity"
+            android:name=".LogCacheActivity"
             android:label="@string/log_new_log" >
         </activity>
         <activity
